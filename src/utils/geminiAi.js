@@ -57,7 +57,7 @@ Return a JSON object with this exact structure:
     const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s quick attempt
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${cleanKey}`;
-    
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
