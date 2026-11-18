@@ -578,14 +578,7 @@ def build_aat2_report():
     # =========================================================================
     add_heading_1(doc, "5. IMPLEMENTATION / METHODOLOGY")
     add_body_p(doc,
-        "The implementation methodology of the AI Resume Analyzer and ATS Score Matcher follows a systematic five-stage processing workflow connecting client-side document ingestion, regex entity extraction, 5-layer deterministic scoring, semantic vector projection, and Google Gemini AI copilot synthesis:"
-    )
-    
-    # Figure 5.1: Pipeline / Architecture
-    add_figure_or_placeholder(doc, "Figure 5.1", 
-        "Five-Stage In-Browser Document Parsing, Deterministic ATS Scoring, and Gemini AI Architecture Pipeline",
-        ["figure5_1.png", "fig5_1.png", "figure5.1.png"],
-        "Capture/create an architecture workflow diagram showing Document Ingestion -> Telemetry Parser -> 5-Layer Scoring Engine -> Gemini AI Copilot -> React 19 UI. Save as 'doc/image/fig5_1.png'."
+        "The implementation methodology of the AI Resume Analyzer and ATS Score Matcher follows a systematic five-stage processing workflow connecting client-side document ingestion, regex entity extraction, 5-layer deterministic scoring, semantic vector projection, and Google Gemini AI copilot synthesis."
     )
     
     add_heading_2(doc, "5.1 Mathematical Formulation of the 5-Layer ATS Scoring Engine & TF-IDF Cosine Vector Space")
