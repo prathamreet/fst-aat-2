@@ -16,29 +16,29 @@ export default function JobDescriptionInput({ jdText, setJdText, selectedJdId, s
   };
 
   return (
-    <div className="bg-white rounded-lg border border-zinc-200 p-5 flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-[#e6e6e6] p-6 flex flex-col h-full shadow-2xs">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#e6e6e6]">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-bold text-[#1d1d1d] tracking-tight">
             Target Job Description
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            Role requirements, required competencies, and qualifications
+          <p className="text-xs text-[#696969] mt-0.5">
+            Role prerequisites, required competencies, and experience
           </p>
         </div>
 
         {wordCount > 0 && (
-          <span className="text-[11px] text-zinc-500 font-mono">
+          <span className="text-[11px] text-[#696969] font-medium bg-[#f4ede4] px-2.5 py-1 rounded-full border border-[#e8d8c8]">
             {wordCount} words · {charCount} chars
           </span>
         )}
       </div>
 
       {/* Preset Roles Bar */}
-      <div className="mt-3.5 flex items-center justify-between">
-        <span className="text-[11px] text-zinc-500 font-medium">
-          Load preset:
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px]">
+          Demo role:
         </span>
         <div className="flex items-center space-x-1.5">
           {SAMPLE_JOB_DESCRIPTIONS.map((sample) => {
@@ -54,10 +54,10 @@ export default function JobDescriptionInput({ jdText, setJdText, selectedJdId, s
                 key={sample.id}
                 type="button"
                 onClick={() => loadSampleJd(sample)}
-                className={`px-2 py-1 text-xs rounded border transition-colors ${
+                className={`px-3 py-1 text-xs rounded-full font-bold transition-all ${
                   isSelected
-                    ? 'border-zinc-900 bg-zinc-900 text-white font-medium'
-                    : 'border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100 hover:border-zinc-300'
+                    ? 'bg-[#4a154b] text-white shadow-2xs'
+                    : 'bg-[#f9f0ff] text-[#4a154b] border border-[#ebd5fc] hover:bg-[#eedcfc]'
                 }`}
                 title={sample.company}
               >
@@ -69,29 +69,27 @@ export default function JobDescriptionInput({ jdText, setJdText, selectedJdId, s
       </div>
 
       {/* Textarea Input */}
-      <div className="mt-3 flex-1 flex flex-col">
+      <div className="mt-4 flex-1 flex flex-col">
         <textarea
-          rows={11}
+          rows={10}
           value={jdText}
           onChange={(e) => {
             setJdText(e.target.value);
             setSelectedJdId(null);
           }}
-          placeholder="Paste job description requirements, responsibilities, and qualifications..."
-          className="w-full flex-1 p-3 text-xs font-mono bg-zinc-50 border border-zinc-300 rounded-md focus:ring-1 focus:ring-zinc-900 focus:bg-white text-zinc-900 resize-y leading-relaxed"
+          placeholder="Paste target job requirements, engineering stack, tenure expectations, and qualifications..."
+          className="w-full flex-1 p-3.5 text-xs bg-[#ffffff] border border-[#e6e6e6] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4a154b]/20 focus:border-[#4a154b] text-[#1d1d1d] resize-y leading-relaxed font-sans placeholder:text-[#696969]"
         />
 
         {jdText && (
-          <div className="mt-2 flex items-center justify-between">
-            <span className="text-[11px] text-zinc-400">
-              Includes required skills, experience tenure, and degree expectations.
-            </span>
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#696969]">
+            <span>NLP analyzes technical skills, tenure threshold, and education degree level.</span>
             <button
               type="button"
               onClick={clearJd}
-              className="text-xs text-zinc-500 hover:text-red-600 hover:underline"
+              className="text-[#cc4117] hover:underline font-bold"
             >
-              Clear Job Description
+              Clear job description
             </button>
           </div>
         )}

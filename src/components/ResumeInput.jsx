@@ -72,27 +72,27 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
   };
 
   return (
-    <div className="bg-white rounded-lg border border-zinc-200 p-5 flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-[#e6e6e6] p-6 flex flex-col h-full shadow-2xs">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#e6e6e6]">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-900">
-            Resume Document
+          <h2 className="text-sm font-bold text-[#1d1d1d] tracking-tight">
+            Candidate Resume
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            Upload candidate credentials in PDF or plain text
+          <p className="text-xs text-[#696969] mt-0.5">
+            Ingest credentials in PDF or plain-text format
           </p>
         </div>
 
-        {/* View Mode Segment */}
-        <div className="flex items-center bg-zinc-100 p-0.5 rounded-md text-xs">
+        {/* Slack Pill Switcher */}
+        <div className="flex items-center bg-[#f9f0ff] p-1 rounded-full border border-[#ebd5fc] text-xs">
           <button
             type="button"
             onClick={() => setMode('upload')}
-            className={`px-2.5 py-1 rounded transition-colors ${
+            className={`px-3 py-1 rounded-full font-bold transition-all ${
               mode === 'upload'
-                ? 'bg-white text-zinc-900 font-medium shadow-xs'
-                : 'text-zinc-600 hover:text-zinc-900'
+                ? 'bg-[#4a154b] text-white shadow-2xs'
+                : 'text-[#696969] hover:text-[#1d1d1d]'
             }`}
           >
             File Upload
@@ -100,10 +100,10 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
           <button
             type="button"
             onClick={() => setMode('text')}
-            className={`px-2.5 py-1 rounded transition-colors ${
+            className={`px-3 py-1 rounded-full font-bold transition-all ${
               mode === 'text'
-                ? 'bg-white text-zinc-900 font-medium shadow-xs'
-                : 'text-zinc-600 hover:text-zinc-900'
+                ? 'bg-[#4a154b] text-white shadow-2xs'
+                : 'text-[#696969] hover:text-[#1d1d1d]'
             }`}
           >
             Direct Text
@@ -112,9 +112,9 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
       </div>
 
       {/* Preset Profiles Bar */}
-      <div className="mt-3.5 flex items-center justify-between">
-        <span className="text-[11px] text-zinc-500 font-medium">
-          Load preset:
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px]">
+          Demo candidate:
         </span>
         <div className="flex items-center space-x-1.5">
           {SAMPLE_RESUMES.map((sample) => {
@@ -130,10 +130,10 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
                 key={sample.id}
                 type="button"
                 onClick={() => loadSample(sample)}
-                className={`px-2 py-1 text-xs rounded border transition-colors ${
+                className={`px-3 py-1 text-xs rounded-full font-bold transition-all ${
                   isSelected
-                    ? 'border-zinc-900 bg-zinc-900 text-white font-medium'
-                    : 'border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100 hover:border-zinc-300'
+                    ? 'bg-[#4a154b] text-white shadow-2xs'
+                    : 'bg-[#f9f0ff] text-[#4a154b] border border-[#ebd5fc] hover:bg-[#eedcfc]'
                 }`}
               >
                 {shortName}
@@ -144,19 +144,19 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
       </div>
 
       {/* Input Body */}
-      <div className="mt-3 flex-1 flex flex-col">
+      <div className="mt-4 flex-1 flex flex-col">
         {mode === 'upload' ? (
           <div>
-            {/* Dropzone */}
+            {/* Dropzone with Slack Cream / Peach Tint */}
             <div
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border border-dashed rounded-md p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors ${
+              className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                 isDragging
-                  ? 'border-zinc-900 bg-zinc-50'
-                  : 'border-zinc-300 hover:border-zinc-400 bg-zinc-50/50'
+                  ? 'border-[#4a154b] bg-[#f9f0ff]'
+                  : 'border-[#d9bdde] hover:border-[#4a154b] bg-[#fdfaf7]'
               }`}
             >
               <input
@@ -167,26 +167,26 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
                 onChange={onFileChange}
               />
 
-              <div className="w-8 h-8 rounded-md bg-white border border-zinc-200 flex items-center justify-center text-zinc-600 mb-2.5 shadow-xs">
+              <div className="w-10 h-10 rounded-full bg-white border border-[#e6e6e6] flex items-center justify-center text-[#4a154b] mb-2.5 shadow-2xs">
                 {isParsing ? (
-                  <div className="w-4 h-4 border-2 border-zinc-900 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-[#4a154b] border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <Upload className="w-4 h-4" />
+                  <Upload className="w-4 h-4 text-[#4a154b]" />
                 )}
               </div>
 
               {isParsing ? (
                 <div>
-                  <p className="text-xs font-medium text-zinc-900">Parsing PDF layers...</p>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">Extracting plain text streams</p>
+                  <p className="text-xs font-bold text-[#1d1d1d]">Parsing PDF via Web Worker...</p>
+                  <p className="text-[11px] text-[#696969] mt-0.5">Extracting local text stream without server upload</p>
                 </div>
               ) : (
                 <div>
-                  <p className="text-xs font-medium text-zinc-900">
-                    Click to select file or drag and drop
+                  <p className="text-xs font-bold text-[#1d1d1d]">
+                    Choose PDF or plain text resume
                   </p>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">
-                    Supports PDF and TXT formats
+                  <p className="text-[11px] text-[#696969] mt-0.5">
+                    Click to browse or drop file here · 100% private in-browser
                   </p>
                 </div>
               )}
@@ -194,45 +194,46 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
 
             {/* Error Message */}
             {parseError && (
-              <div className="mt-3 p-3 bg-zinc-50 border border-red-200 rounded-md flex items-start space-x-2 text-xs text-red-700">
-                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+              <div className="mt-3 p-3 bg-[#fdf2f2] border border-[#f5c6cb] rounded-xl flex items-start space-x-2 text-xs text-[#cc4117]">
+                <AlertCircle className="w-4 h-4 text-[#cc4117] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-medium">File Parse Warning</p>
-                  <p className="mt-0.5 text-zinc-600">{parseError}</p>
+                  <p className="font-bold">File Parsing Warning</p>
+                  <p className="mt-0.5">{parseError}</p>
                 </div>
               </div>
             )}
 
-            {/* Parsed File Meta Bar */}
+            {/* Uploaded File Metadata Chip */}
             {resumeMeta && (
-              <div className="mt-3 p-3 bg-zinc-50 rounded-md border border-zinc-200 flex items-center justify-between">
-                <div className="flex items-center space-x-2.5 truncate">
-                  <div className="w-7 h-7 rounded bg-white border border-zinc-200 text-zinc-700 flex items-center justify-center shrink-0">
-                    <FileText className="w-3.5 h-3.5" />
+              <div className="mt-3.5 p-3.5 bg-[#f9f0ff] border border-[#ebd5fc] rounded-2xl flex items-center justify-between">
+                <div className="flex items-center space-x-3 truncate">
+                  <div className="w-7 h-7 rounded-full bg-[#007a5a] text-white flex items-center justify-center shrink-0">
+                    <Check className="w-3.5 h-3.5" />
                   </div>
                   <div className="truncate">
-                    <p className="text-xs font-medium text-zinc-900 truncate">
+                    <p className="text-xs font-bold text-[#1d1d1d] truncate">
                       {resumeMeta.fileName}
                     </p>
-                    <p className="text-[11px] text-zinc-500 font-mono">
-                      {resumeMeta.fileSize} · {resumeMeta.wordCount} words
+                    <p className="text-[11px] text-[#696969]">
+                      {resumeMeta.fileSize} · {resumeMeta.wordCount} words · {resumeMeta.fileType}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-1.5 shrink-0">
+
+                <div className="flex items-center space-x-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setMode('text')}
-                    className="p-1 text-zinc-500 hover:text-zinc-900 rounded hover:bg-zinc-200 transition-colors"
-                    title="View & Edit Extracted Text"
+                    className="p-1 text-[#696969] hover:text-[#4a154b] rounded-full transition-colors"
+                    title="View extracted text"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={clearResume}
-                    className="p-1 text-zinc-400 hover:text-red-600 rounded hover:bg-zinc-200 transition-colors"
-                    title="Remove File"
+                    className="p-1 text-[#696969] hover:text-[#cc4117] rounded-full transition-colors"
+                    title="Remove file"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -242,43 +243,32 @@ export default function ResumeInput({ resumeText, setResumeText, resumeMeta, set
           </div>
         ) : (
           <div className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-medium text-zinc-700">
-                Raw Resume Text
-              </label>
-              {resumeText && (
-                <span className="text-[11px] text-zinc-500 font-mono">
-                  {resumeText.split(/\s+/).filter(Boolean).length} words
-                </span>
-              )}
-            </div>
             <textarea
-              rows={11}
               value={resumeText}
               onChange={(e) => {
-                const text = e.target.value;
-                setResumeText(text);
+                setResumeText(e.target.value);
                 setResumeMeta({
-                  fileName: 'Manual_Entry.txt',
-                  fileSize: (new Blob([text]).size / 1024).toFixed(1) + ' KB',
+                  fileName: 'Manual Text Ingestion',
+                  fileSize: (new Blob([e.target.value]).size / 1024).toFixed(1) + ' KB',
                   fileType: 'TXT',
-                  wordCount: text.split(/\s+/).filter(Boolean).length
+                  wordCount: e.target.value.split(/\s+/).filter(Boolean).length
                 });
               }}
               placeholder="Paste plain resume text here..."
-              className="w-full flex-1 p-3 text-xs font-mono bg-zinc-50 border border-zinc-300 rounded-md focus:ring-1 focus:ring-zinc-900 focus:bg-white text-zinc-900 resize-y leading-relaxed"
+              className="flex-1 w-full min-h-[175px] p-3.5 text-xs text-[#1d1d1d] bg-[#ffffff] border border-[#e6e6e6] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4a154b]/20 focus:border-[#4a154b] resize-none font-sans"
             />
-            {resumeText && (
-              <div className="mt-2 flex justify-end">
+            <div className="mt-2 flex items-center justify-between text-[11px] text-[#696969]">
+              <span>{resumeText.split(/\s+/).filter(Boolean).length} words</span>
+              {resumeText && (
                 <button
                   type="button"
                   onClick={clearResume}
-                  className="text-xs text-zinc-500 hover:text-red-600 hover:underline"
+                  className="text-[#cc4117] hover:underline font-bold"
                 >
-                  Clear Resume
+                  Clear text
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
       </div>

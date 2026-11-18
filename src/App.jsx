@@ -10,7 +10,7 @@ import RawComparison from './components/RawComparison';
 import AcademicModal from './components/AcademicModal';
 import GeminiAiSection from './components/GeminiAiSection';
 import { calculateAtsMatch } from './utils/atsMatcher';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { SAMPLE_RESUMES, SAMPLE_JOB_DESCRIPTIONS } from './data/sampleData';
 
 export default function App() {
@@ -56,7 +56,7 @@ export default function App() {
       setAnalysisResults(matchData);
       setIsInputsCollapsed(true);
 
-      // Smooth scroll to results
+      // Smooth scroll to results section
       setTimeout(() => {
         const el = document.getElementById('results-section');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -104,8 +104,8 @@ export default function App() {
   const hasInputs = Boolean(resumeText.trim() && jdText.trim());
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col text-zinc-900 font-sans antialiased">
-      {/* Top Navigation */}
+    <div className="min-h-screen bg-white flex flex-col text-[#1d1d1d] font-sans antialiased">
+      {/* Top Navigation - Slack nav-bar-light */}
       <Navbar
         onReset={handleReset}
         onPrint={handlePrint}
@@ -115,50 +115,71 @@ export default function App() {
 
       {/* Main Workspace */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6">
-        {/* Workspace Intro Header */}
+        {/* Slack Signature Hero Banner - Pastel-Mesh Gradient Backdrop */}
         {!analysisResults && (
-          <div className="mb-6 pb-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-base font-semibold text-zinc-900">
-                AI Resume Analyzer and ATS Score Matcher Using Job Description
-              </h1>
-              <p className="text-xs text-zinc-500 mt-1 max-w-2xl leading-relaxed">
-                Evaluates keyword coverage, experience alignment, academic qualifications, and ATS structural formatting against target job requirements.
-              </p>
+          <div className="mb-8 p-8 sm:p-12 rounded-3xl slack-pastel-mesh border border-[#e6e6e6] shadow-sm relative overflow-hidden">
+            {/* Eyebrow Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f4ede4] border border-[#e8d8c8] text-[#4a154b] text-[11px] font-bold tracking-[0.96px] uppercase mb-4 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#4a154b]" />
+              <span>Slack Design System · College Minor Project</span>
             </div>
 
-            <button
-              type="button"
-              onClick={loadFullDemo}
-              className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md border border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 transition-colors shrink-0 shadow-2xs"
-            >
-              <span>Load Full-Stack Sample</span>
-              <ArrowRight className="w-3.5 h-3.5 ml-1.5 text-zinc-400" />
-            </button>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1d1d1d] tracking-[-0.768px] leading-[1.12] max-w-3xl">
+              AI Resume Analyzer and ATS Score Matcher Using Job Description
+            </h1>
+
+            <p className="text-[#696969] text-base sm:text-lg leading-[1.55] mt-4 max-w-2xl font-normal">
+              An explainable 5-layer natural language processing engine and Google Gemini 3.5 Flash copilot built on Slack's aubergine and cream visual language. 100% private in-browser evaluation.
+            </p>
+
+            {/* Hero Quick Actions */}
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={loadFullDemo}
+                className="inline-flex items-center px-6 py-3 text-sm font-bold rounded-full bg-[#4a154b] text-white hover:bg-[#611f69] active:bg-[#481a54] transition-all shadow-sm hover:shadow-md cursor-pointer"
+              >
+                <span>Load Sample Candidate</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsInfoModalOpen(true)}
+                className="inline-flex items-center px-5 py-3 text-sm font-bold rounded-full bg-[#f9f0ff] text-[#4a154b] hover:bg-[#eedcfc] border border-[#ebd5fc] transition-all cursor-pointer"
+              >
+                <span>Explore Scoring Formula</span>
+              </button>
+            </div>
           </div>
         )}
 
         {/* Input Panels Section */}
         <div className="no-print">
+          {/* Collapsible status header if results are already loaded */}
           {analysisResults && (
-            <div className="mb-4 flex items-center justify-between bg-white p-3 rounded-lg border border-zinc-200 text-xs">
-              <span className="text-zinc-600">
-                Target Role: <strong className="text-zinc-900 font-medium">{analysisResults.jobRequirements.mustHaveSkills.slice(0, 4).join(', ') || 'Software Engineer'}</strong>
-              </span>
+            <div className="mb-5 flex items-center justify-between bg-[#f4ede4] px-5 py-3.5 rounded-2xl border border-[#e8d8c8] text-xs">
+              <div className="flex items-center space-x-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#007a5a]" />
+                <span className="text-[#1d1d1d] font-medium">
+                  Active Analysis Target: <strong className="text-[#4a154b] font-bold">{analysisResults.jobRequirements.mustHaveSkills.slice(0, 4).join(', ') || 'Software Engineer'}</strong>
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsInputsCollapsed(!isInputsCollapsed)}
-                className="text-zinc-700 hover:text-zinc-900 font-medium flex items-center space-x-1"
+                className="inline-flex items-center px-4 py-1.5 text-xs font-bold text-[#4a154b] bg-white border border-[#e6e6e6] rounded-full hover:bg-[#f9f0ff] transition-all shadow-2xs cursor-pointer"
               >
-                <span>{isInputsCollapsed ? 'Edit Inputs' : 'Collapse Panels'}</span>
-                <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isInputsCollapsed ? '' : 'rotate-90'}`} />
+                <span>{isInputsCollapsed ? 'Edit Resume & JD' : 'Collapse Input Panels'}</span>
+                <ChevronRight className={`w-3.5 h-3.5 ml-1 transition-transform ${isInputsCollapsed ? '' : 'rotate-90'}`} />
               </button>
             </div>
           )}
 
+          {/* Dual Input Cards: Resume & Job Description */}
           {(!analysisResults || !isInputsCollapsed) && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-              {/* Resume Input Panel */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* Resume Input Card */}
               <ResumeInput
                 resumeText={resumeText}
                 setResumeText={setResumeText}
@@ -166,7 +187,7 @@ export default function App() {
                 setResumeMeta={setResumeMeta}
               />
 
-              {/* Job Description Panel */}
+              {/* Job Description Input Card */}
               <JobDescriptionInput
                 jdText={jdText}
                 setJdText={setJdText}
@@ -176,28 +197,28 @@ export default function App() {
             </div>
           )}
 
-          {/* Action Execution Bar */}
+          {/* Action Execution Bar - Slack Over-Padded Pill CTA */}
           {(!analysisResults || !isInputsCollapsed) && (
-            <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-white rounded-lg border border-zinc-200 shadow-2xs">
-              <div className="text-xs text-zinc-500">
+            <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-[#f9f0ff] rounded-2xl border border-[#ebd5fc] shadow-2xs">
+              <div className="text-xs text-[#696969]">
                 {hasInputs ? (
-                  <span className="text-zinc-800 font-medium flex items-center">
-                    <span className="w-2 h-2 rounded-full bg-emerald-600 mr-2" />
-                    Both documents ready for analysis.
+                  <span className="text-[#007a5a] font-bold flex items-center text-sm">
+                    <CheckCircle2 className="w-4 h-4 mr-2 text-[#007a5a]" />
+                    Both documents parsed and ready for ATS evaluation.
                   </span>
                 ) : (
-                  <span>
-                    Upload resume and enter job description to proceed.
+                  <span className="text-[#696969]">
+                    Upload a resume and paste a job description (or use presets above) to run scoring.
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center space-x-2.5 w-full sm:w-auto">
+              <div className="flex items-center space-x-3 w-full sm:w-auto">
                 {analysisResults && (
                   <button
                     type="button"
                     onClick={() => setIsInputsCollapsed(true)}
-                    className="px-3.5 py-1.5 text-xs font-medium rounded-md border border-zinc-300 text-zinc-700 hover:bg-zinc-50 transition-colors w-full sm:w-auto"
+                    className="px-5 py-3 text-xs font-bold rounded-full bg-white border border-[#e6e6e6] text-[#1d1d1d] hover:bg-[#f4ede4] transition-all w-full sm:w-auto cursor-pointer"
                   >
                     View Current Report
                   </button>
@@ -207,21 +228,21 @@ export default function App() {
                   type="button"
                   disabled={!hasInputs || isAnalyzing}
                   onClick={handleRunAnalysis}
-                  className={`inline-flex items-center justify-center px-4 py-2 text-xs font-medium rounded-md transition-colors w-full sm:w-auto ${
+                  className={`inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold rounded-full transition-all w-full sm:w-auto ${
                     hasInputs && !isAnalyzing
-                      ? 'bg-zinc-900 text-white hover:bg-zinc-800 cursor-pointer shadow-xs'
-                      : 'bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed'
+                      ? 'bg-[#4a154b] text-white hover:bg-[#611f69] active:bg-[#481a54] cursor-pointer shadow-md hover:shadow-lg'
+                      : 'bg-[#e6e6e6] text-[#696969] cursor-not-allowed'
                   }`}
                 >
                   {isAnalyzing ? (
                     <>
-                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Analyzing...
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Evaluating ATS Compatibility...
                     </>
                   ) : (
                     <>
-                      <span>Analyze Match</span>
-                      <span className="ml-2 font-mono text-[10px] text-zinc-400 border border-zinc-700 px-1 py-0.2 rounded">
+                      <span>Analyze Match & ATS Score</span>
+                      <span className="ml-2.5 font-mono text-[10px] bg-white/20 px-2 py-0.5 rounded-full">
                         ⌘↵
                       </span>
                     </>
@@ -233,15 +254,16 @@ export default function App() {
 
           {/* Error Banner */}
           {errorMsg && (
-            <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-md text-xs text-red-700">
+            <div className="mb-6 p-4 bg-[#fdf2f2] border border-[#f5c6cb] rounded-2xl text-xs text-[#cc4117] font-medium flex items-center">
+              <span className="w-2 h-2 rounded-full bg-[#cc4117] mr-2 shrink-0" />
               {errorMsg}
             </div>
           )}
         </div>
 
-        {/* RESULTS SECTION - CLEAN CONTINUOUS WORKSPACE */}
+        {/* RESULTS SECTION - CLEAN CONTINUOUS SLACK WORKSPACE */}
         {analysisResults && (
-          <div id="results-section" className="space-y-5">
+          <div id="results-section" className="space-y-6">
             {/* 1. Score Card & Component Ledger */}
             <ScoreCard results={analysisResults} />
 
@@ -267,22 +289,59 @@ export default function App() {
 
             {/* 6. Raw Source Inspector */}
             <RawComparison resumeText={resumeText} jdText={jdText} />
+
+            {/* Slack Closing Signature: Aubergine Band Card */}
+            <div className="mt-12 p-8 sm:p-12 rounded-3xl bg-[#4a154b] text-white shadow-lg relative overflow-hidden no-print">
+              <div className="max-w-2xl">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#592466] text-[#d9bdde] text-[11px] font-bold uppercase tracking-[0.96px] mb-3">
+                  Production Evaluation Complete
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.464px] leading-tight">
+                  Ready to optimize another candidate application?
+                </h2>
+                <p className="text-[#d9bdde] text-sm sm:text-base mt-2 leading-[1.55]">
+                  Reset the workspace to evaluate a new resume, export this comprehensive diagnostic report as a PDF, or inspect the mathematical formula table.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="px-6 py-3 rounded-full bg-white text-[#4a154b] hover:bg-[#f9f0ff] font-bold text-xs sm:text-sm transition-all shadow-sm cursor-pointer"
+                  >
+                    Evaluate Another Resume
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handlePrint}
+                    className="px-6 py-3 rounded-full bg-[#592466] text-white hover:bg-[#611f69] border border-[#d9bdde]/30 font-bold text-xs sm:text-sm transition-all cursor-pointer"
+                  >
+                    Export Printable Report
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-zinc-200 py-5 mt-auto text-xs text-zinc-500 no-print">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-zinc-600">
+      {/* Footer - Slack Aubergine Muted Style */}
+      <footer className="bg-white border-t border-[#e6e6e6] py-6 mt-auto text-xs text-[#696969] no-print">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[#1d1d1d] font-medium">
             AI Resume Analyzer and ATS Score Matcher Using Job Description · College Minor Project
           </p>
-          <div className="flex items-center space-x-3 text-[11px] text-zinc-400 font-mono">
-            <span>Deterministic NLP</span>
+          <div className="flex items-center space-x-3 text-[11px] text-[#696969]">
+            <span className="hover:text-[#1264a3] transition-colors cursor-pointer" onClick={() => setIsInfoModalOpen(true)}>Scoring Model</span>
             <span>·</span>
-            <span>Gemini 3.5 Flash</span>
+            <span>Deterministic NLP (40/20/10/15/15)</span>
             <span>·</span>
-            <span>Client-side Execution</span>
+            <span>Google Gemini 3.5 Flash</span>
+            <span>·</span>
+            <a href="https://github.com/prathamreet/fst-aat-2" target="_blank" rel="noreferrer" className="text-[#1264a3] hover:underline font-bold">
+              GitHub Repo
+            </a>
           </div>
         </div>
       </footer>
