@@ -129,7 +129,7 @@ def add_code_block(doc, code_text):
     spacer.paragraph_format.space_before = Pt(0)
     spacer.paragraph_format.space_after = Pt(4)
 
-def add_screenshot_placeholder(doc, fig_id, fig_title, instructions):
+def add_screenshot_placeholder(doc, fig_id, fig_title, target_file, instructions):
     tbl = doc.add_table(rows=1, cols=1)
     tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     cell = tbl.cell(0, 0)
@@ -149,13 +149,19 @@ def add_screenshot_placeholder(doc, fig_id, fig_title, instructions):
     r_tag.font.bold = True
     r_tag.font.color.rgb = RGBColor(0x0F, 0x17, 0x2A)
     
-    r_sub = p.add_run(f"Paste / Insert the screenshot of {fig_title} here.\n")
+    r_sub = p.add_run(f"Target Screenshot: {fig_title}\n")
     r_sub.font.name = 'Times New Roman'
     r_sub.font.size = Pt(10)
     r_sub.font.bold = True
-    r_sub.font.color.rgb = RGBColor(0x25, 0x63, 0xEB)
+    r_sub.font.color.rgb = RGBColor(0x4A, 0x15, 0x4B)
     
-    r_inst = p.add_run(f"Instructions: {instructions}\n(To insert: Click here, choose Insert > Pictures > From this Device, then adjust size to fit)")
+    r_file = p.add_run(f"Save image file as: doc/image/{target_file}\n")
+    r_file.font.name = 'Consolas'
+    r_file.font.size = Pt(9.0)
+    r_file.font.bold = True
+    r_file.font.color.rgb = RGBColor(0x12, 0x64, 0xA3)
+    
+    r_inst = p.add_run(f"Instructions: {instructions}\n(Drop '{target_file}' into doc/image/ and re-run generator to automatically embed, or click here and choose Insert > Pictures)")
     r_inst.font.name = 'Times New Roman'
     r_inst.font.size = Pt(8.5)
     r_inst.font.italic = True
@@ -170,6 +176,37 @@ def add_screenshot_placeholder(doc, fig_id, fig_title, instructions):
     r_cap.font.name = 'Times New Roman'
     r_cap.font.size = Pt(9.5)
     r_cap.font.bold = True
+
+def add_figure_or_placeholder(doc, fig_id, fig_title, possible_filenames, instructions):
+    """Embed real screenshot if found in doc/image/, else render styled placeholder box"""
+    found_path = None
+    for fname in possible_filenames:
+        p = os.path.join("doc", "image", fname)
+        if os.path.exists(p):
+            found_path = p
+            break
+            
+    if found_path:
+        # Embed real image
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.paragraph_format.space_before = Pt(8)
+        p_img.paragraph_format.space_after = Pt(4)
+        run = p_img.add_run()
+        run.add_picture(found_path, width=Inches(6.5))
+        
+        # Caption below image
+        p_cap = doc.add_paragraph()
+        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_cap.paragraph_format.space_before = Pt(2)
+        p_cap.paragraph_format.space_after = Pt(8)
+        r_cap = p_cap.add_run(f"{fig_id}: {fig_title}")
+        r_cap.font.name = 'Times New Roman'
+        r_cap.font.size = Pt(9.5)
+        r_cap.font.bold = True
+    else:
+        # Render placeholder box
+        add_screenshot_placeholder(doc, fig_id, fig_title, possible_filenames[0], instructions)
 
 def build_aat2_report():
     doc = docx.Document()
@@ -204,7 +241,7 @@ def build_aat2_report():
         ("DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING", 11.5, True),
         ("Academic Year: 2026–2027", 10.5, False),
         ("ALTERNATIVE ASSESSMENT TEST - 2 (AAT-2)", 12.0, True),
-        ("PORTFOLIO-DRIVEN PRACTICAL PROJECT REPORT (15 MARKS)", 11.0, True),
+        ("AI-AUGMENTED DEVELOPMENT PRACTICAL PROJECT REPORT (15 MARKS)", 11.0, True),
         ("A Practical Technical Report Submitted for the Course", 10.0, False),
         ("FULL STACK TECHNOLOGIES - 22CSE71", 11.5, True),
         ("PROJECT TITLE", 10.0, True),
@@ -242,11 +279,11 @@ def build_aat2_report():
         ("Semester / Section", "7D"),
         ("Course / Subject", "Full Stack Technologies - 22CSE71"),
         ("Faculty Evaluator / Instructor", "Ms. Pravallika Medidha"),
-        ("Assessment Title", "AAT-2: Portfolio-Driven Project Development (15 Marks)"),
+        ("Assessment Title", "AAT-2: AI-Augmented Development (15 Marks)"),
         ("Project Title", "AI Resume Analyzer and ATS Score Matcher Using Job Description"),
         ("GitHub Repository Link", "https://github.com/prathamreet/fst-aat-2"),
-        ("Live Production Web Link", "[PLACEHOLDER: Insert Live Netlify Deployment URL here, e.g., https://fst-aat2-prathamreet-1nh23cs191.netlify.app/]"),
-        ("Date of Submission", "18 / 11 / 2026")
+        ("Live Production Web Link", "https://fst-aat2-1nh23cs191.netlify.app/"),
+        ("Date of Submission", "19 / 11 / 2026")
     ]
     
     t1 = doc.add_table(rows=len(t1_data), cols=2)
@@ -268,6 +305,8 @@ def build_aat2_report():
             r.font.name = 'Times New Roman'
             r.font.size = Pt(9.5)
             r.font.bold = (c_idx == 0)
+            if c_idx == 1 and 'http' in text:
+                r.font.color.rgb = RGBColor(0x12, 0x64, 0xA3)
             
     doc.add_paragraph().paragraph_format.space_after = Pt(4)
     
@@ -347,7 +386,7 @@ def build_aat2_report():
     p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_sub.paragraph_format.space_before = Pt(1)
     p_sub.paragraph_format.space_after = Pt(2)
-    r_sub = p_sub.add_run("A Client-Side Natural Language Processing Pipeline, Deterministic ATS Scoring Algorithm, TF-IDF Cosine Similarity Vector Model, and Google Gemini 3.5 Flash Copilot")
+    r_sub = p_sub.add_run("An AI-Augmented Full-Stack Development Pipeline, Deterministic ATS Scoring Algorithm, TF-IDF Cosine Similarity Vector Model, and Google Gemini 3.5 Flash Copilot")
     r_sub.font.name = 'Times New Roman'
     r_sub.font.size = Pt(9.5)
     
@@ -359,10 +398,10 @@ def build_aat2_report():
     r_l1.font.name = 'Times New Roman'
     r_l1.font.size = Pt(9.5)
     r_l1.font.bold = True
-    r_l2 = p_live.add_run("[PLACEHOLDER: Insert Live Netlify Deployment URL here, e.g., https://fst-aat2-prathamreet-1nh23cs191.netlify.app/]")
+    r_l2 = p_live.add_run("https://fst-aat2-1nh23cs191.netlify.app/")
     r_l2.font.name = 'Times New Roman'
     r_l2.font.size = Pt(9.5)
-    r_l2.font.color.rgb = RGBColor(0x25, 0x63, 0xEB)
+    r_l2.font.color.rgb = RGBColor(0x12, 0x64, 0xA3)
     
     p_git = doc.add_paragraph()
     p_git.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -375,7 +414,7 @@ def build_aat2_report():
     r_g2 = p_git.add_run("https://github.com/prathamreet/fst-aat-2")
     r_g2.font.name = 'Times New Roman'
     r_g2.font.size = Pt(9.5)
-    r_g2.font.color.rgb = RGBColor(0x25, 0x63, 0xEB)
+    r_g2.font.color.rgb = RGBColor(0x12, 0x64, 0xA3)
     
     # =========================================================================
     # SECTION 2: PROBLEM STATEMENT AND OBJECTIVES
@@ -384,14 +423,14 @@ def build_aat2_report():
     add_heading_2(doc, "2.1 Problem Statement")
     
     add_body_p(doc, 
-        "In modern technical recruitment and corporate talent acquisition, over 90% of Fortune 500 enterprises utilize Applicant Tracking Systems (ATS)—such as Workday, Taleo, Greenhouse, and iCIMS—to programmatically parse, filter, and rank applicant resumes prior to human evaluation. Due to the high volume of inbound candidates, these enterprise algorithms execute automated lexical extraction and rule-based keyword indexing to filter out non-compliant or low-scoring applicants. However, commercial ATS architectures operate as opaque 'black boxes' from the applicant's perspective. Job seekers receive automated rejection notices without diagnostic insights indicating whether disqualification stemmed from omission of critical hard skills, tenure misalignments, missing education credentials, or unstructured formatting that broke document parsing."
+        "In contemporary software engineering recruitment and corporate talent acquisition, over 90% of Fortune 500 enterprises rely on automated Applicant Tracking Systems (ATS)—including Workday, Taleo, Greenhouse, and iCIMS—to programmatically parse, filter, and score candidate resumes prior to human evaluation. Due to the exponential surge of digital applications, enterprise recruiters enforce automated lexical keyword extraction and deterministic matching rules to filter out candidate submissions that fail strict prerequisite benchmarks. However, conventional ATS pipelines operate as opaque 'black boxes' from the applicant's perspective. Qualified candidates frequently receive automated rejections without diagnostic explanations regarding whether disqualification stemmed from omission of specific technical competencies, tenure mismatch, missing academic degrees, or unstructured formatting that broke document parsing."
     )
     add_body_p(doc, 
-        "Furthermore, contemporary online resume review services introduce severe data privacy liabilities. Most available platforms require candidates to upload their documents to third-party remote cloud servers, where Personally Identifiable Information (PII)—including personal phone numbers, home addresses, personal email accounts, and confidential employment trajectories—is permanently recorded, monetized, or exposed to security breaches. Additionally, pure Large Language Model (LLM) resume graders introduce non-deterministic variability, producing fluctuating scores for identical inputs across successive prompts. Therefore, there is a compelling need for a client-side, privacy-preserving web application engineered with in-browser PDF parsing (pdfjs-dist), a deterministic 5-layer weighted ATS scoring algorithm (incorporating TF-IDF cosine similarity), and a Google Gemini 3.5 Flash copilot for explainable, reproducible, and private career diagnostics."
+        "Furthermore, contemporary online resume review services introduce severe personal privacy liabilities. Most commercially available platforms mandate uploading documents to third-party remote cloud servers, where Personally Identifiable Information (PII)—including personal phone numbers, home addresses, emails, and proprietary employment histories—is permanently recorded, monetized, or exposed to security leaks. Additionally, relying solely on ungrounded Large Language Model (LLM) prompts introduces non-deterministic variability, producing fluctuating scores for identical resumes across successive queries. Therefore, within the scope of AI-Augmented Development (AAT-2), there is a critical need for a privacy-preserving web application combining client-side Web Worker PDF parsing (pdfjs-dist), an explainable 5-layer deterministic ATS scoring engine (incorporating TF-IDF cosine similarity), and a Google Gemini 3.5 Flash copilot for nuanced qualitative career diagnostics."
     )
     
     add_heading_2(doc, "2.2 Project Objectives")
-    add_bullet_p(doc, "Client-Side Privacy & In-Browser PDF Parsing",
+    add_bullet_p(doc, "AI-Augmented Architecture & In-Browser PDF Parsing",
         "To engineer a zero-backend, client-side document processing pipeline using pdfjs-dist Web Workers, extracting multi-page PDF text layers and plain-text resumes directly within the browser without transmitting sensitive candidate PII across the network."
     )
     add_bullet_p(doc, "Heuristic Candidate Telemetry & Entity Extraction",
@@ -416,7 +455,7 @@ def build_aat2_report():
     t3_data = [
         ("Frontend UI & Reactive State (src/components/, src/App.jsx)",
          "React 19, Vite 8, Tailwind CSS v4, Lucide React",
-         "Single-page continuous application layout, reactive score gauge, keyword filters, sticky telemetry panel, and printable export view."),
+         "Slack design language implementation, single-page continuous layout, 54px aubergine score gauge, keyword filters, sticky telemetry, and printable report export."),
         ("Document Processing & Ingestion (src/utils/textParser.js)",
          "pdfjs-dist (Client-side Web Worker), HTML5 FileReader",
          "High-fidelity multi-page PDF text layer extraction directly in-browser, raw text file parsing, and zero-PII privacy guarantee."),
@@ -425,13 +464,13 @@ def build_aat2_report():
          "Deterministic 5-factor scoring algorithm (skills, tenure, degree, format, cosine similarity), stop-word filtering, and 600+ skill taxonomy indexing."),
         ("AI Copilot & Generative Layer (src/utils/geminiAi.js, geminiDemoData.js)",
          "Google Gemini 3.5 Flash (gemini-3.5-flash-lite, v1beta REST)",
-         "Generates executive recruiter review, Google XYZ bullet-point optimizations, candidate gap-targeted interview prep, and tailored cover letter with defensive fallback."),
+         "AI-Augmented development feature: executive recruiter review, Google XYZ bullet-point rewrites, gap-targeted interview prep, and tailored cover letter."),
         ("Testing & Quality Assurance (test/verify.js, testGemini.js)",
          "Node.js Test Runner, ES Modules",
          "5-scenario automated regression verification covering full-stack, frontend, and data analyst roles, scoring boundary conditions, and contact entity parsing."),
         ("Static Cloud Edge Hosting (public/, dist/)",
          "Netlify Global Edge CDN, SPA Redirect Rewrites (_redirects)",
-         "Ultra-fast client-side static asset delivery, sub-second TTFB, and zero-configuration continuous deployment from GitHub.")
+         "Production hosting at https://fst-aat2-1nh23cs191.netlify.app/ with global edge CDN distribution, sub-second TTFB, and continuous deployment from GitHub.")
     ]
     
     t3 = doc.add_table(rows=len(t3_data) + 1, cols=3)
@@ -471,7 +510,7 @@ def build_aat2_report():
     add_heading_2(doc, "4.1 System Overview and Multi-Component Architecture")
     
     add_body_p(doc,
-        "The AI Resume Analyzer and ATS Score Matcher is a production-grade web application engineered to bridge the transparency divide between applicants and automated hiring filters. Built with React 19, Vite, and Tailwind CSS v4, the system operates completely client-side to ensure candidate privacy while offering FAANG-grade interface aesthetics and zero-delay responsiveness. The architecture decouples document ingestion, deterministic heuristic evaluation, and generative intelligence into three synchronized layers:"
+        "The AI Resume Analyzer and ATS Score Matcher is an enterprise-grade AI-augmented web application engineered to bridge the transparency divide between applicants and automated hiring filters. Built with React 19, Vite, and Tailwind CSS v4, the system operates completely client-side to ensure candidate privacy while offering Slack's iconic aubergine and cream visual language with zero-delay responsiveness. The architecture decouples document ingestion, deterministic heuristic evaluation, and generative intelligence into three synchronized layers:"
     )
     add_body_p(doc,
         "1. Client-Side Document Ingestion & Telemetry Parser (src/utils/textParser.js): Ingests candidate resumes in either PDF format (processed via pdfjs-dist running in dedicated Web Workers) or plain text format. The ingestion layer tokenizes text, cleans unicode artifacts, and applies specialized regular expressions to extract candidate contact parameters (Name, Email, Phone, LinkedIn, GitHub), professional career tenure spans (e.g., '2021 - Present' mapped to cumulative years), academic qualifications (Doctorate, Master's, Bachelor's, Associate), ATS section compliance, and quantified metrics (percentages, throughput numbers, latency gains)."
@@ -489,7 +528,7 @@ def build_aat2_report():
     t4_data = [
         ("src/components/",
          "Navbar.jsx, ResumeInput.jsx, JobDescriptionInput.jsx, ScoreCard.jsx, KeywordList.jsx, ParsedProfile.jsx, Recommendations.jsx, GeminiAiSection.jsx, RawComparison.jsx, AcademicModal.jsx",
-         "Modular React 19 UI components rendering continuous single-page layout, responsive 0-100 gauge, keyword copy chips, telemetry grid, side-by-side diff inspector, and modal mathematical formulations."),
+         "Slack design system UI components: continuous single-page layout, 54px aubergine score gauge, keyword copy chips, telemetry grid, side-by-side diff inspector, and modal mathematical formulations."),
         ("src/utils/",
          "atsMatcher.js, textParser.js, geminiAi.js",
          "Core algorithmic engines: deterministic 5-factor scoring, TF-IDF cosine similarity, PDF Web Worker text extraction, contact regex parsers, and Google Gemini 3.5 Flash REST client."),
@@ -500,8 +539,8 @@ def build_aat2_report():
          "verify.js, testGemini.js",
          "Automated regression verification: executes 5 comprehensive integration tests verifying scoring accuracy across candidate profiles, edge conditions, and contact extractors."),
         ("Root Configuration & Deployment",
-         "index.html, package.json, vite.config.js, .env.example, .gitattributes, public/_redirects",
-         "Build orchestration: Vite bundler with Tailwind CSS v4, LF line-ending normalization, sensitive environment protection, and Netlify SPA 200 rewrite rule.")
+         "index.html, package.json, vite.config.js, .env.example, .gitattributes, DESIGN-slack.md, public/_redirects",
+         "Build orchestration: Vite bundler with Tailwind CSS v4, Slack design tokens, sensitive environment protection, and Netlify SPA 200 rewrite rule.")
     ]
     
     t4 = doc.add_table(rows=len(t4_data) + 1, cols=3)
@@ -542,10 +581,11 @@ def build_aat2_report():
         "The implementation methodology of the AI Resume Analyzer and ATS Score Matcher follows a systematic five-stage processing workflow connecting client-side document ingestion, regex entity extraction, 5-layer deterministic scoring, semantic vector projection, and Google Gemini AI copilot synthesis:"
     )
     
-    # Figure 5.1 Placeholder
-    add_screenshot_placeholder(doc, "Figure 5.1", 
+    # Figure 5.1: Pipeline / Architecture
+    add_figure_or_placeholder(doc, "Figure 5.1", 
         "Five-Stage In-Browser Document Parsing, Deterministic ATS Scoring, and Gemini AI Architecture Pipeline",
-        "Insert the system architecture / pipeline diagram showing Document Ingestion -> Telemetry Parser -> 5-Layer Scoring Engine -> Gemini AI Copilot -> React 19 UI."
+        ["figure5_1.png", "fig5_1.png", "figure5.1.png"],
+        "Capture/create an architecture workflow diagram showing Document Ingestion -> Telemetry Parser -> 5-Layer Scoring Engine -> Gemini AI Copilot -> React 19 UI. Save as 'doc/image/fig5_1.png'."
     )
     
     add_heading_2(doc, "5.1 Mathematical Formulation of the 5-Layer ATS Scoring Engine & TF-IDF Cosine Vector Space")
@@ -582,7 +622,7 @@ def build_aat2_report():
     add_body_p(doc, "4. Execute Automated Verification Test Suite: Run npm test to verify all 5 scoring integration scenarios across candidate profiles, edge cases, and contact parsers.")
     add_body_p(doc, "5. Launch Local Development Server: Execute npm run dev to launch the local Vite server at http://localhost:5173/ with Hot Module Replacement (HMR).")
     add_body_p(doc, "6. Compile Production Static Bundle: Run npm run build to compile the optimized production distribution into dist/ with minified assets and client-side routing fallback (_redirects).")
-    add_body_p(doc, "7. Deploy to Netlify Global Edge CDN: Upload the dist/ folder to app.netlify.com/drop (or link GitHub for continuous deployment) and set VITE_GEMINI_API_KEY in Netlify Site Settings.")
+    add_body_p(doc, "7. Deploy to Netlify Global Edge CDN: Deployed at https://fst-aat2-1nh23cs191.netlify.app/ with global edge CDN distribution and VITE_GEMINI_API_KEY environment variable configured.")
     
     # =========================================================================
     # SECTION 6: IMPORTANT CODE SNIPPETS
@@ -760,18 +800,19 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
     # =========================================================================
     add_heading_1(doc, "7. OUTPUT SCREENSHOTS")
     add_body_p(doc,
-        "The operational outputs of the AI Resume Analyzer and ATS Score Matcher are presented across Figures 7.1, 7.2, and 7.3. Figure 7.1 illustrates the live production dashboard deployed on Netlify, rendering real-time candidate telemetry, the 0–100 compatibility gauge, and the 5-dimensional ATS breakdown ledger:"
+        "The operational outputs of the AI Resume Analyzer and ATS Score Matcher are presented across Figures 7.1, 7.2, and 7.3. Figure 7.1 illustrates the live production dashboard deployed on Netlify at https://fst-aat2-1nh23cs191.netlify.app/, rendering real-time candidate telemetry, the 0–100 compatibility gauge, and the 5-dimensional ATS breakdown ledger:"
     )
     
-    # Figure 7.1 Placeholder
-    add_screenshot_placeholder(doc, "Figure 7.1",
-        "Production AI Resume Analyzer & ATS Score Matcher Dashboard showing real-time 0-100 Score Gauge (Alex Rivera: 90/100 Strong Match), 5-Dimension Score Ledger, Candidate Profile Telemetry, and Keyword Discrepancy Breakdown on Netlify",
-        "Capture the top half of the application on Netlify (or localhost:5173) after loading 'Alex Rivera' and clicking 'Analyze Compatibility'. Ensure the 90/100 score gauge, Candidate Profile telemetry grid, and 5-category breakdown bars are visible."
+    # Figure 7.1: Production Main Interface
+    add_figure_or_placeholder(doc, "Figure 7.1",
+        "Production AI Resume Analyzer & ATS Score Matcher Dashboard showing real-time 0-100 Score Gauge (Alex Rivera: 90/100 Strong Match), 5-Dimension Score Ledger, Candidate Profile Telemetry, and Keyword Discrepancy Breakdown on Netlify (https://fst-aat2-1nh23cs191.netlify.app/)",
+        ["figure7_1.png", "fig7_1.png", "figure7.1.png"],
+        "Open https://fst-aat2-1nh23cs191.netlify.app/ in Chrome/browser. Click 'Load Sample Candidate' then 'Analyze Match & ATS Score'. Capture the top half showing the 90/100 score gauge, Match Category pill ('Strong Match'), category score bars, and Candidate Profile telemetry. Save as 'doc/image/fig7_1.png'."
     )
     
     add_heading_2(doc, "7.1 Functional Analysis of Dashboard & Scorecard Output (Figure 7.1)")
     add_bullet_p(doc, "Composite ATS Compatibility Score Gauge (Top Left)",
-        "Renders a bold numerical score gauge (90/100) paired with an automated status badge ('Strong Match') indicating immediate readiness for human recruiter review."
+        "Renders a bold 54px aubergine numerical score gauge (90/100) paired with an automated status badge ('Strong Match') indicating immediate readiness for human recruiter review."
     )
     add_bullet_p(doc, "5-Dimensional Weighted Scoring Ledger (Top Right)",
         "Displays the transparent breakdown across Technical Skills (40/40), Experience Alignment (17/20), Education Credentials (10/10), ATS Formatting (14/15), and Semantic TF-IDF Relevance (9/15)."
@@ -783,10 +824,11 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
         "Features segmented interactive filters (All, Matched, Missing, Alternative) displaying color-coded tags with single-click copy buttons for rapid resume updating."
     )
     
-    # Figure 7.2 Placeholder
-    add_screenshot_placeholder(doc, "Figure 7.2",
+    # Figure 7.2: Keyword Analysis, Recommendations & Gemini AI Section
+    add_figure_or_placeholder(doc, "Figure 7.2",
         "Keyword Analysis, Diagnostic Recommendations, and Google Gemini 3.5 Flash Copilot Section (Executive Review, XYZ Bullet Rewrites, Interview Prep, and Cover Letter)",
-        "Capture the middle and lower sections of the results page showing the 'Strengths vs Gaps' audit ledger, prioritized action items, and the Google Gemini 3.5 Flash Copilot cards."
+        ["figure7_2.png", "fig7_2.png", "figure7.2.png"],
+        "On https://fst-aat2-1nh23cs191.netlify.app/, scroll down slightly to capture the Keyword Matrix chips, Strengths vs Gaps diagnostic audit, and the Gemini AI Copilot section showing the Executive Recruiter Critique and Google XYZ Bullet Rewrites. Save as 'doc/image/fig7_2.png'."
     )
     
     add_heading_2(doc, "7.2 Functional Analysis of Keyword Discrepancy & Gemini AI Insights (Figure 7.2)")
@@ -803,10 +845,11 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
         "Predicts technical interview questions specifically probing candidate weaknesses with recommended answering strategies, alongside an auto-drafted personalized cover letter."
     )
     
-    # Figure 7.3 Placeholder
-    add_screenshot_placeholder(doc, "Figure 7.3",
+    # Figure 7.3: Academic Scoring Methodology Modal
+    add_figure_or_placeholder(doc, "Figure 7.3",
         "Academic Scoring Methodology Modal Dialog and Source Text Inspector with Real-Time Substring Search Highlighting",
-        "Capture the 'Academic Scoring Formula' modal dialog (opened from Navbar) OR the side-by-side 'Raw Text Comparison' inspector showing substring search highlighting."
+        ["figure7_3.png", "fig7_3.png", "figure7.3.png"],
+        "On https://fst-aat2-1nh23cs191.netlify.app/, click 'Scoring Model' in the top navbar to open the modal dialog showing the 5-factor weighted model table, OR capture the side-by-side Source Text Inspector. Save as 'doc/image/fig7_3.png'."
     )
     
     add_heading_2(doc, "7.3 Functional Analysis of Academic Modal & Source Inspector (Figure 7.3)")
@@ -824,10 +867,10 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
     
     t8_data = [
         ("Repository Name & Visibility", "fst-aat-2 (Public Portfolio Repository)"),
-        ("GitHub Owner & Commit Count", "prathamreet (PRATHAM REET) — main branch, 3 Commits"),
+        ("GitHub Owner & Commit Count", "prathamreet (PRATHAM REET) — main branch, 4 Commits"),
         ("Direct Repository Link", "https://github.com/prathamreet/fst-aat-2"),
-        ("Live Production Deployment Link", "[PLACEHOLDER: Insert Live Netlify Deployment URL here, e.g., https://fst-aat2-prathamreet-1nh23cs191.netlify.app/]"),
-        ("Uploaded Project Modules", ".env.example, .gitattributes, .gitignore, doc/, public/, src/ (components/, utils/, data/), test/, package.json, vite.config.js, README.md")
+        ("Live Production Deployment Link", "https://fst-aat2-1nh23cs191.netlify.app/"),
+        ("Uploaded Project Modules", ".env.example, .gitattributes, .gitignore, DESIGN-slack.md, doc/, public/, src/ (components/, utils/, data/), test/, package.json, vite.config.js, README.md")
     ]
     
     t8 = doc.add_table(rows=len(t8_data), cols=2)
@@ -847,13 +890,16 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
             r.font.name = 'Times New Roman'
             r.font.size = Pt(9.0)
             r.font.bold = (c_idx == 0)
+            if c_idx == 1 and 'http' in text:
+                r.font.color.rgb = RGBColor(0x12, 0x64, 0xA3)
             
     doc.add_paragraph().paragraph_format.space_after = Pt(4)
     
-    # Figure 8.1 Placeholder
-    add_screenshot_placeholder(doc, "Figure 8.1",
+    # Figure 8.1: GitHub Repository
+    add_figure_or_placeholder(doc, "Figure 8.1",
         "Official GitHub Repository (prathamreet/fst-aat-2) showing Commits, Clean History, README.md, Component Tree, and Academic Documentation",
-        "Capture the official GitHub repository home page at https://github.com/prathamreet/fst-aat-2 showing the file tree, latest commit message, and rendered README.md badges."
+        ["figure8_1.png", "fig8_1.png", "figure8.1.png"],
+        "Capture the official GitHub repository home page at https://github.com/prathamreet/fst-aat-2 showing the repository title, 4 commits, file list, and rendered README.md shields. Save as 'doc/image/fig8_1.png'."
     )
     
     # =========================================================================
@@ -881,22 +927,22 @@ Return structured JSON: { "executiveCritique", "strengthsHighlight", "criticalGa
     # =========================================================================
     add_heading_1(doc, "10. LEARNING OUTCOMES AND CONCLUSION")
     add_heading_2(doc, "10.1 Learning Outcomes")
+    add_bullet_p(doc, "AI-Augmented Full-Stack Development Workflow",
+        "Mastered AI-augmented development patterns combining client-side deterministic algorithms with Google Gemini 3.5 Flash copilot reasoning, understanding how generative AI augments rather than replaces traditional deterministic software architectures."
+    )
     add_bullet_p(doc, "Client-Side Privacy Architecture & Web Worker Processing",
-        "Mastered in-browser PDF document processing using pdfjs-dist and Web Workers, gaining deep appreciation for client-side privacy architectures that process sensitive candidate PII without backend exposure."
+        "Engineered in-browser PDF document processing using pdfjs-dist and Web Workers, gaining deep appreciation for client-side privacy architectures that process sensitive candidate PII without backend exposure."
     )
     add_bullet_p(doc, "Deterministic NLP & Vector Space Mathematics",
         "Formulated and implemented an explainable multi-factor scoring model combining deterministic keyword indexing, heuristic regex entity extraction, and Term Frequency-Inverse Document Frequency (TF-IDF) cosine vector projection."
     )
-    add_bullet_p(doc, "Generative AI Integration & Defensive Systems Engineering",
-        "Acquired hands-on experience integrating Google Gemini 3.5 Flash REST APIs, mastering defensive timeout handling, JSON schema enforcement, and zero-latency contextual fallback engineering."
-    )
     add_bullet_p(doc, "Production Static Edge Deployment & Test-Driven Verification",
-        "Built and deployed an enterprise-grade React 19 single-page application on Netlify Global Edge CDN, managing environment variables, automated Node.js test suites, and clean GitHub version control."
+        "Built and deployed an enterprise-grade React 19 single-page application on Netlify Global Edge CDN (https://fst-aat2-1nh23cs191.netlify.app/), managing environment variables, automated Node.js test suites, and clean GitHub version control."
     )
     
     add_heading_2(doc, "10.2 Conclusion")
     add_body_p(doc,
-        "The AI Resume Analyzer and ATS Score Matcher Using Job Description successfully fulfills all technical, architectural, and documentation requirements of the AAT-2 Portfolio-Driven Practical Project for the course Full Stack Technologies (22CSE71). By synergizing in-browser PDF parsing (ensuring 100% candidate PII privacy), an explainable 5-layer deterministic ATS scoring engine, TF-IDF cosine semantic vector projection, and Google Gemini 3.5 Flash generative intelligence—all deployed on Netlify Global Edge CDN—the project delivers a transparent, production-ready career diagnostic tool. Documented and version-controlled on GitHub under prathamreet/fst-aat-2, this project stands as an exemplary, industry-aligned full-stack portfolio artifact."
+        "The AI Resume Analyzer and ATS Score Matcher Using Job Description successfully fulfills all technical, architectural, and documentation requirements of the AAT-2 AI-Augmented Development Practical Project for the course Full Stack Technologies (22CSE71). By synergizing in-browser PDF parsing (ensuring 100% candidate PII privacy), an explainable 5-layer deterministic ATS scoring engine, TF-IDF cosine semantic vector projection, and Google Gemini 3.5 Flash generative intelligence—all deployed on Netlify Global Edge CDN at https://fst-aat2-1nh23cs191.netlify.app/—the project delivers a transparent, production-ready career diagnostic tool. Documented and version-controlled on GitHub under prathamreet/fst-aat-2, this project stands as an exemplary, industry-aligned AI-augmented full-stack artifact."
     )
     
     # =========================================================================
