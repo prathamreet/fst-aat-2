@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, Check, RefreshCw, FileText, Sparkles } from 'lucide-react';
+import { Copy, Check, RefreshCw, FileText } from 'lucide-react';
 import { generateGeminiInsights, GEMINI_API_KEY } from '../utils/geminiAi.js';
 import { buildContextualGeminiAnalysis } from '../data/geminiDemoData.js';
 
@@ -38,44 +38,44 @@ export default function GeminiAiSection({ resumeText, jdText, matchResults }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#e6e6e6] p-7 shadow-xs">
+    <div className="bg-white rounded-lg border border-zinc-200 p-5 sm:p-6 shadow-2xs">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#e6e6e6]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-zinc-100">
         <div>
-          <div className="flex items-center space-x-2.5">
-            <h3 className="text-sm font-bold text-[#1d1d1d] tracking-tight">
+          <div className="flex items-center space-x-2">
+            <h3 className="text-sm font-semibold text-zinc-900">
               AI Recruiter Audit & Optimization
             </h3>
-            <span className="text-[11px] font-bold text-[#4a154b] bg-[#f9f0ff] px-3 py-0.5 rounded-full border border-[#ebd5fc]">
+            <span className="text-[11px] font-mono text-zinc-500 bg-zinc-100 px-2 py-0.5 rounded border border-zinc-200">
               Gemini 3.5 Flash
             </span>
           </div>
-          <p className="text-xs text-[#696969] mt-0.5">
-            Executive hiring critique, Google XYZ bullet rewrites, and gap-targeted interview prep
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Recruiter evaluation, Google XYZ bullet-point rewrites, and interview preparation
           </p>
         </div>
 
-        {/* Action Button - Slack Pill Button */}
+        {/* Action Button */}
         <div>
           <button
             type="button"
             disabled={isGenerating}
             onClick={handleLiveReanalyze}
-            className={`inline-flex items-center px-4 py-2 text-xs font-bold rounded-full border transition-all ${
+            className={`inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md border transition-colors cursor-pointer ${
               isGenerating
-                ? 'bg-[#f4ede4] border-[#e8d8c8] text-[#696969] cursor-wait'
-                : 'bg-[#f9f0ff] border-[#ebd5fc] text-[#4a154b] hover:bg-[#eedcfc] cursor-pointer shadow-2xs'
+                ? 'bg-zinc-100 border-zinc-200 text-zinc-400 cursor-wait'
+                : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300 hover:text-zinc-900 shadow-2xs'
             }`}
           >
             {isGenerating ? (
               <>
-                <RefreshCw className="w-3.5 h-3.5 animate-spin mr-1.5 text-[#4a154b]" />
-                Querying Google API...
+                <RefreshCw className="w-3.5 h-3.5 animate-spin mr-1.5 text-zinc-500" />
+                Querying Model...
               </>
             ) : (
               <>
-                <RefreshCw className="w-3.5 h-3.5 mr-1.5 text-[#4a154b]" />
-                Live Re-evaluate
+                <RefreshCw className="w-3.5 h-3.5 mr-1.5 text-zinc-400" />
+                Re-evaluate
               </>
             )}
           </button>
@@ -83,43 +83,40 @@ export default function GeminiAiSection({ resumeText, jdText, matchResults }) {
       </div>
 
       {/* AI Results Body */}
-      <div className="mt-6 space-y-6">
-        {/* 1. Recruiter Executive Assessment - Slack Warm Cream Editorial Block */}
-        <div className="bg-[#f4ede4] border-l-4 border-[#4a154b] p-5 rounded-r-2xl border-y border-r border-[#e8d8c8]">
-          <div className="flex items-center space-x-2 mb-2">
-            <Sparkles className="w-4 h-4 text-[#4a154b]" />
-            <span className="text-xs font-bold text-[#4a154b] uppercase tracking-[0.96px]">
-              Executive Recruiter Critique
-            </span>
-          </div>
-          <p className="text-xs sm:text-sm text-[#1d1d1d] leading-[1.6]">
+      <div className="mt-5 space-y-5">
+        {/* 1. Recruiter Executive Assessment */}
+        <div className="border-l-2 border-zinc-900 bg-zinc-50/60 p-4 rounded-r-md">
+          <span className="text-xs font-semibold text-zinc-900 block mb-1">
+            Executive Assessment
+          </span>
+          <p className="text-xs text-zinc-700 leading-relaxed">
             {geminiData?.executiveCritique}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-3.5 border-t border-[#e8d8c8] text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 pt-3 border-t border-zinc-200/80 text-xs">
             <div>
-              <span className="font-bold text-[#007a5a] flex items-center mb-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#007a5a] mr-1.5" />
-                Verified Candidate Strengths:
+              <span className="font-medium text-emerald-800 flex items-center mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5" />
+                Core Advantages:
               </span>
-              <ul className="space-y-1.5 text-[#1d1d1d] text-xs">
+              <ul className="space-y-1 text-zinc-600 text-[11px]">
                 {geminiData?.strengthsHighlight?.map((str, i) => (
                   <li key={i} className="flex items-start">
-                    <span className="mr-1.5 text-[#007a5a] font-bold">•</span>
+                    <span className="mr-1.5 text-zinc-400">•</span>
                     <span>{str}</span>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <span className="font-bold text-[#cc4117] flex items-center mb-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#cc4117] mr-1.5" />
-                Key Discrepancies to Address:
+              <span className="font-medium text-amber-800 flex items-center mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-600 mr-1.5" />
+                Gaps to Clarify:
               </span>
-              <ul className="space-y-1.5 text-[#1d1d1d] text-xs">
+              <ul className="space-y-1 text-zinc-600 text-[11px]">
                 {geminiData?.criticalGaps?.map((gap, i) => (
                   <li key={i} className="flex items-start">
-                    <span className="mr-1.5 text-[#cc4117] font-bold">•</span>
+                    <span className="mr-1.5 text-zinc-400">•</span>
                     <span>{gap}</span>
                   </li>
                 ))}
@@ -130,57 +127,57 @@ export default function GeminiAiSection({ resumeText, jdText, matchResults }) {
 
         {/* 2. Optimized Resume Bullet Points */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-xs font-bold text-[#1d1d1d] uppercase tracking-[0.96px]">
-              Targeted Bullet Point Rewrites (Google XYZ Formula)
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-xs font-semibold text-zinc-900">
+              Suggested Bullet Point Rewrites (Google XYZ Formula)
             </h4>
-            <span className="text-[11px] text-[#696969] font-medium">
+            <span className="text-[11px] text-zinc-400">
               Accomplished [X] measured by [Y] by doing [Z]
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {geminiData?.optimizedBulletPoints?.map((item, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-2xl border border-[#e6e6e6] bg-white hover:border-[#ebd5fc] transition-all shadow-2xs"
+                className="p-3 rounded-md border border-zinc-200 bg-white hover:border-zinc-300 transition-colors shadow-2xs"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold text-[#4a154b] bg-[#f9f0ff] px-2.5 py-0.5 rounded-full border border-[#ebd5fc] uppercase tracking-wider">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-mono font-medium text-zinc-500 uppercase bg-zinc-100 px-2 py-0.5 rounded border border-zinc-200">
                     {item.originalConcept}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleCopy(item.rewrittenBullet, `bullet-${idx}`)}
-                    className="px-3 py-1 rounded-full bg-[#f9f0ff] text-[#4a154b] hover:bg-[#eedcfc] border border-[#ebd5fc] text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-2xs"
-                    title="Copy optimized bullet"
+                    className="p-1 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 text-xs flex items-center space-x-1 transition-colors cursor-pointer"
+                    title="Copy bullet"
                   >
                     {copiedItem === `bullet-${idx}` ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-[#007a5a]" />
-                        <span className="text-[#007a5a]">Copied</span>
+                        <Check className="w-3 h-3 text-emerald-600" />
+                        <span className="text-[10px] text-emerald-700 font-medium">Copied</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-3 h-3 text-[#4a154b]" />
-                        <span>Copy</span>
+                        <Copy className="w-3 h-3" />
+                        <span className="text-[10px]">Copy</span>
                       </>
                     )}
                   </button>
                 </div>
 
-                <p className="text-xs sm:text-sm text-[#1d1d1d] font-medium leading-[1.6]">
+                <p className="text-xs text-zinc-900 font-medium leading-relaxed">
                   • {item.rewrittenBullet}
                 </p>
 
                 {item.keywordsInjected && item.keywordsInjected.length > 0 && (
-                  <div className="mt-2.5 flex items-center space-x-2">
-                    <span className="text-[11px] text-[#696969] font-medium">Injected Keywords:</span>
-                    <div className="flex flex-wrap gap-1.5">
+                  <div className="mt-2 flex items-center space-x-1.5">
+                    <span className="text-[10px] text-zinc-400">Target Keywords:</span>
+                    <div className="flex flex-wrap gap-1">
                       {item.keywordsInjected.map((kw, k) => (
                         <span
                           key={k}
-                          className="px-2.5 py-0.5 rounded-full text-[11px] bg-[#e6f4ea] border border-[#b7e1cd] text-[#007a5a] font-bold"
+                          className="px-1.5 py-0.5 rounded text-[10px] bg-zinc-50 border border-zinc-200 text-zinc-700 font-mono"
                         >
                           {kw}
                         </span>
@@ -195,27 +192,27 @@ export default function GeminiAiSection({ resumeText, jdText, matchResults }) {
 
         {/* 3. Predicted Interview Questions */}
         <div>
-          <h4 className="text-xs font-bold text-[#1d1d1d] uppercase tracking-[0.96px] mb-3">
+          <h4 className="text-xs font-semibold text-zinc-900 mb-2">
             Predicted Technical Interview Questions
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {geminiData?.predictedInterviewQuestions?.map((q, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-2xl border border-[#e6e6e6] bg-white flex flex-col justify-between shadow-2xs"
+                className="p-3 rounded-md border border-zinc-200 bg-white flex flex-col justify-between shadow-2xs"
               >
                 <div>
-                  <span className="text-[10px] font-bold text-[#1264a3] bg-[#f0f7fc] px-2.5 py-0.5 rounded-full border border-[#cbe2f5] uppercase tracking-wider inline-block mb-2">
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase block mb-1">
                     {q.category}
                   </span>
-                  <p className="text-xs font-bold text-[#1d1d1d] leading-snug">
+                  <p className="text-xs font-medium text-zinc-900 leading-snug">
                     "{q.question}"
                   </p>
                 </div>
 
-                <div className="mt-3.5 pt-2.5 border-t border-[#e6e6e6] text-[11px] text-[#696969]">
-                  <span className="text-[#1d1d1d] font-bold block mb-0.5">Recruiter Focus:</span>
+                <div className="mt-3 pt-2 border-t border-zinc-100 text-[11px] text-zinc-500">
+                  <span className="text-zinc-700 font-medium block mb-0.5">Focus:</span>
                   <p className="line-clamp-3 leading-relaxed">{q.expectedAnswerSummary}</p>
                 </div>
               </div>
@@ -225,32 +222,32 @@ export default function GeminiAiSection({ resumeText, jdText, matchResults }) {
 
         {/* 4. Tailored Cover Letter */}
         {geminiData?.tailoredCoverLetter && (
-          <div className="border border-[#e8d8c8] rounded-2xl p-5 bg-[#fdfaf7] shadow-2xs">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-[#4a154b] flex items-center">
-                <FileText className="w-4 h-4 mr-1.5 text-[#4a154b]" />
+          <div className="border border-zinc-200 rounded-md p-4 bg-zinc-50/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-zinc-900 flex items-center">
+                <FileText className="w-3.5 h-3.5 mr-1.5 text-zinc-400" />
                 Tailored Cover Letter
               </span>
               <button
                 type="button"
                 onClick={() => handleCopy(geminiData.tailoredCoverLetter, 'cover-letter')}
-                className="inline-flex items-center px-4 py-1.5 text-xs font-bold rounded-full bg-[#4a154b] text-white hover:bg-[#611f69] transition-all cursor-pointer shadow-2xs"
+                className="inline-flex items-center px-2 py-1 text-xs font-medium rounded border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 transition-colors cursor-pointer shadow-2xs"
               >
                 {copiedItem === 'cover-letter' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-white mr-1.5" />
+                    <Check className="w-3 h-3 text-emerald-600 mr-1" />
                     <span>Copied</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 mr-1.5 text-white" />
+                    <Copy className="w-3 h-3 mr-1 text-zinc-400" />
                     <span>Copy Letter</span>
                   </>
                 )}
               </button>
             </div>
 
-            <div className="p-4 bg-white border border-[#e6e6e6] rounded-xl text-xs text-[#1d1d1d] leading-relaxed whitespace-pre-wrap select-text font-sans">
+            <div className="p-3 bg-white border border-zinc-200 rounded text-xs text-zinc-800 leading-relaxed whitespace-pre-wrap select-text font-sans">
               {geminiData.tailoredCoverLetter}
             </div>
           </div>

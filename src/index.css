@@ -2,75 +2,64 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     
-    /* Slack Design Language Tokens from DESIGN-slack.md */
-    --slack-primary: #4a154b;
-    --slack-primary-deep: #481a54;
-    --slack-primary-press: #611f69;
-    --slack-primary-tint: #592466;
-    --slack-ink: #1d1d1d;
-    --slack-ink-mute: #696969;
-    --slack-link-blue: #1264a3;
-    --slack-link-hover: #3860be;
-    --slack-canvas: #ffffff;
-    --slack-canvas-cream: #f4ede4;
-    --slack-canvas-lavender: #f9f0ff;
-    --slack-hairline: #e6e6e6;
-    --slack-semantic-error: #cc4117;
-    --slack-semantic-success: #007a5a;
-    --slack-on-aubergine-mute: #d9bdde;
+    /* Purpose-built neutral design tokens */
+    --surface-canvas: #fcfcfc;
+    --surface-elevated: #ffffff;
+    --border-subtle: #f4f4f5;
+    --border-default: #e4e4e7;
+    --border-strong: #d4d4d8;
+    --text-primary: #09090b;
+    --text-secondary: #52525b;
+    --text-muted: #71717a;
+    --text-subtle: #a1a1aa;
+    
+    /* Semantic accents */
+    --accent-success: #15803d;
+    --accent-success-bg: #f0fdf4;
+    --accent-success-border: #bbf7d0;
+    
+    --accent-error: #b91c1c;
+    --accent-error-bg: #fef2f2;
+    --accent-error-border: #fecaca;
+    
+    --accent-info: #1d4ed8;
+    --accent-info-bg: #eff6ff;
+    --accent-info-border: #bfdbfe;
   }
 
   body {
-    background-color: #ffffff;
-    color: var(--slack-ink);
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
     font-family: var(--font-sans);
-    line-height: 1.55;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    selection-background-color: #4a154b;
-    selection-color: #ffffff;
+    letter-spacing: -0.011em;
   }
 
   ::selection {
-    background: #4a154b;
+    background: #18181b;
     color: #ffffff;
   }
 }
 
-/* Slack Pastel-Mesh Atmospheric Gradient (Peachy orange + Lavender + Cream) */
-.slack-pastel-mesh {
-  background-color: #ffffff;
-  background-image:
-    radial-gradient(at 0% 0%, #f9f0ff 0px, transparent 55%),
-    radial-gradient(at 100% 0%, #fff0e6 0px, transparent 50%),
-    radial-gradient(at 50% 60%, #f4ede4 0px, transparent 65%);
-}
-
-.slack-cream-band {
-  background-color: #f4ede4;
-}
-
-.slack-lavender-band {
-  background-color: #f9f0ff;
-}
-
-/* Custom scrollbars */
+/* Crisp, unobtrusive scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d9bdde;
-  border-radius: 90px;
+  background: #d4d4d8;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4a154b;
+  background: #a1a1aa;
 }
 
 /* Print styling for ATS evaluation report export */

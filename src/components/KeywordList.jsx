@@ -22,40 +22,40 @@ export default function KeywordList({ keywords }) {
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-[#e6e6e6] p-7 shadow-xs">
+    <div className="bg-white rounded-lg border border-zinc-200 p-5 sm:p-6 shadow-2xs">
       {/* Header & Search */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#e6e6e6]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-zinc-100">
         <div>
-          <h3 className="text-sm font-bold text-[#1d1d1d] tracking-tight">
+          <h3 className="text-sm font-semibold text-zinc-900">
             Keyword Analysis Matrix
           </h3>
-          <p className="text-xs text-[#696969] mt-0.5">
-            Technical competencies and domain skills extracted against target job posting
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Technical competencies and skills extracted against target job requisition
           </p>
         </div>
 
-        {/* Search Input - Slack Pill Form */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-3.5 h-3.5 text-[#696969] absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Search */}
+        <div className="relative w-full sm:w-60">
+          <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search keywords..."
+            placeholder="Filter keywords..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 text-xs bg-[#ffffff] border border-[#e6e6e6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#4a154b]/20 focus:border-[#4a154b] text-[#1d1d1d] placeholder:text-[#696969] transition-all"
+            className="w-full pl-8 pr-3 py-1.5 text-xs bg-zinc-50 border border-zinc-200 rounded-md focus:bg-white focus:border-zinc-900 focus:outline-none text-zinc-900 transition-colors"
           />
         </div>
       </div>
 
-      {/* Filter Segment Control - Slack Pills */}
-      <div className="flex flex-wrap items-center gap-2 mt-4 pb-4 border-b border-[#e6e6e6]">
+      {/* Segmented Filter Control */}
+      <div className="flex items-center space-x-1.5 mt-3.5 pb-3 border-b border-zinc-100">
         <button
           type="button"
           onClick={() => setActiveTab('all')}
-          className={`px-4 py-1.5 text-xs rounded-full font-bold transition-all ${
+          className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
             activeTab === 'all'
-              ? 'bg-[#4a154b] text-white shadow-2xs'
-              : 'bg-[#f9f0ff] text-[#4a154b] border border-[#ebd5fc] hover:bg-[#eedcfc]'
+              ? 'bg-zinc-900 text-white'
+              : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
           }`}
         >
           All ({matched.length + missing.length})
@@ -63,10 +63,10 @@ export default function KeywordList({ keywords }) {
         <button
           type="button"
           onClick={() => setActiveTab('matched')}
-          className={`px-4 py-1.5 text-xs rounded-full font-bold transition-all ${
+          className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
             activeTab === 'matched'
-              ? 'bg-[#007a5a] text-white shadow-2xs'
-              : 'bg-[#e6f4ea] text-[#007a5a] border border-[#b7e1cd] hover:bg-[#d6f0df]'
+              ? 'bg-zinc-900 text-white'
+              : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
           }`}
         >
           Matched ({matched.length})
@@ -74,10 +74,10 @@ export default function KeywordList({ keywords }) {
         <button
           type="button"
           onClick={() => setActiveTab('missing')}
-          className={`px-4 py-1.5 text-xs rounded-full font-bold transition-all ${
+          className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
             activeTab === 'missing'
-              ? 'bg-[#cc4117] text-white shadow-2xs'
-              : 'bg-[#fdf2f2] text-[#cc4117] border border-[#f5c6cb] hover:bg-[#fae2e2]'
+              ? 'bg-zinc-900 text-white'
+              : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
           }`}
         >
           Missing ({missing.length})
@@ -86,10 +86,10 @@ export default function KeywordList({ keywords }) {
           <button
             type="button"
             onClick={() => setActiveTab('related')}
-            className={`px-4 py-1.5 text-xs rounded-full font-bold transition-all ${
+            className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
               activeTab === 'related'
-                ? 'bg-[#1264a3] text-white shadow-2xs'
-                : 'bg-[#f0f7fc] text-[#1264a3] border border-[#cbe2f5] hover:bg-[#e1effa]'
+                ? 'bg-zinc-900 text-white'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
             }`}
           >
             Alternatives ({relatedMatches.length})
@@ -98,30 +98,30 @@ export default function KeywordList({ keywords }) {
       </div>
 
       {/* Content */}
-      <div className="mt-5 space-y-6">
+      <div className="mt-4 space-y-5">
         {/* Matched Keywords */}
         {(activeTab === 'all' || activeTab === 'matched') && (
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-bold text-[#1d1d1d] flex items-center">
-                <span className="w-2 h-2 rounded-full bg-[#007a5a] mr-2" />
-                Verified in Candidate Resume ({filteredMatched.length})
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-zinc-900 flex items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-2" />
+                Present in Resume ({filteredMatched.length})
               </span>
             </div>
 
             {filteredMatched.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {filteredMatched.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-[#e6f4ea] text-[#007a5a] border border-[#b7e1cd] shadow-2xs"
+                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200"
                   >
                     {skill}
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-[#696969] italic">No matched keywords found.</p>
+              <p className="text-xs text-zinc-400 italic">No matched keywords found.</p>
             )}
           </div>
         )}
@@ -129,30 +129,30 @@ export default function KeywordList({ keywords }) {
         {/* Missing Keywords */}
         {(activeTab === 'all' || activeTab === 'missing') && (
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-bold text-[#1d1d1d] flex items-center">
-                <span className="w-2 h-2 rounded-full bg-[#cc4117] mr-2" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-zinc-900 flex items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-600 mr-2" />
                 Missing Qualifications ({filteredMissing.length})
               </span>
-              <span className="text-[11px] text-[#696969] font-medium">
-                Click chip to copy missing term
+              <span className="text-[11px] text-zinc-400">
+                Click chip to copy
               </span>
             </div>
 
             {filteredMissing.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {filteredMissing.map((skill) => (
                   <button
                     key={skill}
                     type="button"
                     onClick={() => handleCopy(skill)}
-                    className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-[#fdf2f2] text-[#cc4117] border border-[#f5c6cb] hover:bg-[#fae2e2] transition-all group cursor-pointer shadow-2xs"
+                    className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-800 hover:text-zinc-900 transition-colors group cursor-pointer"
                     title="Click to copy keyword"
                   >
                     <span>{skill}</span>
-                    <span className="ml-2 text-[#cc4117]/60 group-hover:text-[#cc4117]">
+                    <span className="ml-1.5 text-zinc-400 group-hover:text-zinc-700">
                       {copiedSkill === skill ? (
-                        <Check className="w-3.5 h-3.5 text-[#007a5a]" />
+                        <Check className="w-3 h-3 text-emerald-600" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )}
@@ -161,7 +161,7 @@ export default function KeywordList({ keywords }) {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-[#696969] italic">No missing keywords found.</p>
+              <p className="text-xs text-zinc-400 italic">No missing keywords found.</p>
             )}
           </div>
         )}
@@ -169,30 +169,30 @@ export default function KeywordList({ keywords }) {
         {/* Alternative / Related Matches */}
         {(activeTab === 'all' || activeTab === 'related') && relatedMatches.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-bold text-[#1d1d1d] flex items-center">
-                <span className="w-2 h-2 rounded-full bg-[#1264a3] mr-2" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-zinc-900 flex items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mr-2" />
                 Equivalent / Alternative Competencies ({relatedMatches.length})
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {relatedMatches.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-2xl border border-[#ebd5fc] bg-[#f9f0ff] flex items-center justify-between text-xs"
+                  className="p-2.5 rounded-md border border-zinc-200 bg-zinc-50 flex items-center justify-between text-xs"
                 >
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-[#4a154b] capitalize">
+                    <span className="font-medium text-zinc-700 capitalize">
                       {item.detectedAlternative}
                     </span>
-                    <ArrowRight className="w-3 h-3 text-[#696969]" />
-                    <span className="font-bold text-[#1d1d1d] capitalize">
+                    <ArrowRight className="w-3 h-3 text-zinc-400" />
+                    <span className="font-semibold text-zinc-900 capitalize">
                       {item.required}
                     </span>
                   </div>
-                  <span className="text-[11px] text-[#1264a3] font-bold bg-white px-2 py-0.5 rounded-full border border-[#cbe2f5]">
-                    Semantic
+                  <span className="text-[10px] text-zinc-500 font-mono">
+                    Related
                   </span>
                 </div>
               ))}

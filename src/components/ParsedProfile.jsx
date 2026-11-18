@@ -5,88 +5,92 @@ export default function ParsedProfile({ profile }) {
   if (!profile) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-[#e6e6e6] p-7 shadow-xs">
-      <div className="pb-4 border-b border-[#e6e6e6] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+    <div className="bg-white rounded-lg border border-zinc-200 p-6 shadow-xs">
+      <div className="pb-4 border-b border-zinc-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h3 className="text-sm font-bold text-[#1d1d1d] tracking-tight">
+          <h3 className="text-sm font-semibold text-zinc-900 tracking-tight">
             Parser Telemetry & Extracted Metadata
           </h3>
-          <p className="text-xs text-[#696969] mt-0.5">
-            Internal entity extraction verification for ATS compliance and keyword indexing
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Deterministic entity extraction verification for ATS compliance and keyword indexing
           </p>
         </div>
-        <span className="text-[11px] font-bold text-[#4a154b] bg-[#f9f0ff] px-3 py-1 rounded-full border border-[#ebd5fc] w-fit">
-          Telemetry Verifier
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-mono font-medium bg-zinc-100 text-zinc-700 border border-zinc-200 w-fit">
+          Local Parser Telemetry
         </span>
       </div>
 
-      {/* Metadata Table Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5 text-xs">
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-1">
+      {/* Primary Metadata Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-5 text-xs">
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
             Candidate Name
           </span>
-          <span className="font-bold text-[#1d1d1d] text-sm truncate block">
+          <span className="font-semibold text-zinc-900 text-sm truncate block">
             {profile.name || 'Not detected'}
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-1">
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
             Email Contact
           </span>
-          <span className="font-bold text-[#1d1d1d] truncate block" title={profile.email}>
-            {profile.email || <span className="text-[#cc4117]">Missing</span>}
+          <span className="font-medium text-zinc-900 truncate block" title={profile.email}>
+            {profile.email || <span className="text-rose-600 font-mono text-[11px]">Missing</span>}
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-1">
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
             Phone Number
           </span>
-          <span className="font-bold text-[#1d1d1d] truncate block">
-            {profile.phone || <span className="text-[#cc4117]">Missing</span>}
+          <span className="font-medium text-zinc-900 truncate block">
+            {profile.phone || <span className="text-rose-600 font-mono text-[11px]">Missing</span>}
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-1">
-            Social Profiles
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
+            Profiles & Repos
           </span>
-          <div className="flex items-center space-x-2 text-[#1d1d1d] font-bold">
-            <span className={profile.linkedin ? 'text-[#1264a3]' : 'text-[#696969]'}>LinkedIn</span>
-            <span className="text-[#e6e6e6]">·</span>
-            <span className={profile.github ? 'text-[#4a154b]' : 'text-[#696969]'}>GitHub</span>
+          <div className="flex items-center space-x-2 text-zinc-700 font-medium">
+            <span className={profile.linkedin ? 'text-zinc-900 font-semibold' : 'text-zinc-400'}>
+              LinkedIn {profile.linkedin ? '✓' : '—'}
+            </span>
+            <span className="text-zinc-300">/</span>
+            <span className={profile.github ? 'text-zinc-900 font-semibold' : 'text-zinc-400'}>
+              GitHub {profile.github ? '✓' : '—'}
+            </span>
           </div>
         </div>
       </div>
 
       {/* Secondary Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 text-xs">
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-3.5 text-xs">
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2">
             Experience & Credentials
           </span>
-          <div className="space-y-1.5 text-[#1d1d1d]">
+          <div className="space-y-1.5 text-zinc-800">
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Career Tenure:</span>
-              <span className="font-bold text-[#4a154b]">~{profile.yearsExperience} Years</span>
+              <span className="text-zinc-500">Career Tenure:</span>
+              <span className="font-mono font-medium text-zinc-900">~{profile.yearsExperience} Years</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Academic Degree:</span>
-              <span className="font-bold text-[#1d1d1d]">{profile.degree}</span>
+              <span className="text-zinc-500">Academic Degree:</span>
+              <span className="font-medium text-zinc-900">{profile.degree}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Document Length:</span>
-              <span className="font-bold text-[#1d1d1d]">{profile.wordCount} words</span>
+              <span className="text-zinc-500">Document Length:</span>
+              <span className="font-mono text-zinc-900">{profile.wordCount} words</span>
             </div>
           </div>
         </div>
 
         {/* Section Header Health */}
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-2">
-            ATS Section Compliance ({profile.detectedSections.length}/6)
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2">
+            Standard ATS Sections ({profile.detectedSections.length}/6)
           </span>
           <div className="grid grid-cols-2 gap-1.5 text-xs">
             {['Summary', 'Experience', 'Skills', 'Education', 'Projects', 'Certifications'].map((sec) => {
@@ -94,11 +98,11 @@ export default function ParsedProfile({ profile }) {
               return (
                 <div key={sec} className="flex items-center space-x-1.5">
                   {isFound ? (
-                    <Check className="w-3.5 h-3.5 text-[#007a5a] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                   ) : (
-                    <X className="w-3.5 h-3.5 text-[#cc4117] shrink-0" />
+                    <X className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                   )}
-                  <span className={isFound ? 'text-[#1d1d1d] font-bold' : 'text-[#696969]'}>
+                  <span className={isFound ? 'text-zinc-900 font-medium' : 'text-zinc-400'}>
                     {sec}
                   </span>
                 </div>
@@ -108,22 +112,26 @@ export default function ParsedProfile({ profile }) {
         </div>
 
         {/* Impact Language & Metrics */}
-        <div className="p-4 rounded-2xl border border-[#e6e6e6] bg-[#ffffff] shadow-2xs">
-          <span className="text-[11px] text-[#696969] font-bold uppercase tracking-[0.96px] block mb-2">
+        <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50/50">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2">
             Language & Impact Signals
           </span>
-          <div className="space-y-1.5 text-[#1d1d1d]">
+          <div className="space-y-1.5 text-zinc-800">
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Action Verbs Count:</span>
-              <span className="font-bold text-[#007a5a]">{profile.actionVerbsCount || 0} verbs</span>
+              <span className="text-zinc-500">Action Verbs:</span>
+              <span className="font-mono font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                {profile.actionVerbsCount || 0} verbs
+              </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Quantified Metrics:</span>
-              <span className="font-bold text-[#1264a3]">{profile.metricsCount || 0} metrics</span>
+              <span className="text-zinc-500">Quantified Metrics:</span>
+              <span className="font-mono font-medium text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                {profile.metricsCount || 0} metrics
+              </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-[#696969]">Readability Index:</span>
-              <span className="font-bold text-[#4a154b]">Standard Resume Format</span>
+              <span className="text-zinc-500">Format Structure:</span>
+              <span className="font-mono text-zinc-700">Single Column Plain</span>
             </div>
           </div>
         </div>

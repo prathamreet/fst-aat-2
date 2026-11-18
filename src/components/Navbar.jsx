@@ -1,34 +1,33 @@
 import React from 'react';
-import { HelpCircle, Printer, RotateCcw } from 'lucide-react';
+import { HelpCircle, Printer, RotateCcw, FileCheck2 } from 'lucide-react';
 
 export default function Navbar({ onReset, onPrint, onOpenInfo, hasResults }) {
   return (
-    <header className="bg-white border-b border-[#e6e6e6] sticky top-0 z-30 transition-all">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <header className="bg-white border-b border-zinc-200 sticky top-0 z-30">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-13 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center space-x-3.5">
-          {/* Slack Iconic Hashtag / Grid Mark */}
-          <div className="w-8 h-8 rounded-lg bg-[#4a154b] text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
-            <span className="font-mono text-base font-extrabold leading-none">#</span>
+        <div className="flex items-center space-x-2.5 truncate">
+          <div className="w-7 h-7 rounded-md bg-zinc-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+            <FileCheck2 className="w-3.5 h-3.5 text-zinc-100" />
           </div>
-          <div className="flex flex-col truncate">
-            <span className="text-sm sm:text-base font-bold text-[#1d1d1d] tracking-[-0.256px] truncate">
+          <div className="flex items-center space-x-2 truncate">
+            <span className="text-sm font-semibold text-zinc-900 tracking-tight truncate">
               AI Resume Analyzer and ATS Score Matcher Using Job Description
             </span>
-            <span className="text-[11px] font-medium text-[#696969] hidden sm:block tracking-[0.1px]">
-              Slack Design System · 5-Layer Deterministic ATS & Gemini Copilot
+            <span className="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-100 text-zinc-600 border border-zinc-200">
+              Deterministic NLP + Gemini
             </span>
           </div>
         </div>
 
-        {/* Action Buttons - Slack Pill Geometry */}
-        <div className="flex items-center space-x-2.5 no-print">
+        {/* Action Controls - Purpose-Built SaaS Buttons */}
+        <div className="flex items-center space-x-2 no-print shrink-0">
           <button
             type="button"
             onClick={onOpenInfo}
-            className="inline-flex items-center px-4 py-2 text-xs font-bold text-[#4a154b] bg-[#f9f0ff] border border-[#ebd5fc] rounded-full hover:bg-[#eedcfc] transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4a154b]"
+            className="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 shadow-2xs"
           >
-            <HelpCircle className="w-3.5 h-3.5 mr-1.5 text-[#4a154b]" />
+            <HelpCircle className="w-3.5 h-3.5 mr-1.5 text-zinc-500" />
             <span>Scoring Model</span>
           </button>
 
@@ -37,16 +36,16 @@ export default function Navbar({ onReset, onPrint, onOpenInfo, hasResults }) {
               <button
                 type="button"
                 onClick={onPrint}
-                className="inline-flex items-center px-4 py-2 text-xs font-bold text-[#1264a3] bg-[#f9f0ff] border border-[#ebd5fc] rounded-full hover:bg-[#eedcfc] transition-all shadow-2xs"
+                className="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-md hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300 transition-colors shadow-2xs"
               >
-                <Printer className="w-3.5 h-3.5 mr-1.5 text-[#1264a3]" />
+                <Printer className="w-3.5 h-3.5 mr-1.5 text-zinc-500" />
                 <span>Export Report</span>
               </button>
 
               <button
                 type="button"
                 onClick={onReset}
-                className="inline-flex items-center px-3 py-1.5 text-xs font-bold text-[#696969] hover:text-[#cc4117] hover:bg-[#fdf2f2] rounded-full transition-all"
+                className="inline-flex items-center px-2 py-1.5 text-xs font-medium text-zinc-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                 title="Reset workspace"
               >
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />
